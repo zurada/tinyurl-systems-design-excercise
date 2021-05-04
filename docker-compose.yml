@@ -1,0 +1,83 @@
+version: "3.9"
+services:
+  entry-lb:
+    image: nginx
+    volumes:
+     - ./load-balancer/:/etc/nginx/templates
+    ports:
+     - "8080:80"
+    environment:
+     - NGINX_HOST=localhost
+     - NGINX_PORT=8080
+     - REDIRECT_API_URL=http://tiny-url-api:8080/redirect/
+     - TINY_WEB_GEN_URL=http://tiny-web-gen
+    depends_on:
+     - tiny-web-gen
+     - tiny-url-api
+  tiny-web-gen:
+    image: tiny-web-gen
+    ports:
+      - '1337:80'   
+    environment:
+    # this one directly in .env -REDIRECT_API_URL=http://localhost:8080/      
+    - CREATE_API_URL=http://tiny-url-api:8080/create 
+  tiny-url-api:
+    image: tiny-url-api
+    ports:
+      - "8081:8080"
+    environment:
+    - URL_KEY_MGR_HOST=url-key-manager 
+    - URL_KEY_MGR_PORT=8080
+    - URL_KEY_GEN_HOST=url-key-generator
+    - URL_KEY_GEN_PORT=8080 
+    - MIN_AVAILABLE_KEYS=200
+    - MAIN_PAGE_URL=http://localhost:8080
+  url-key-manager:
+    image: url-key-manager
+    hostname: manager
+    ports:
+      - "8082:8080"
+    environment:
+    - REDIS_HOSTS=redisdb    
+    - MONGO_HOSTS=mongo    
+  url-key-generator:
+    image: url-key-generator
+    hostname: generator
+    ports:
+      - "8083:8080"
+    environment:
+    - REDIS_HOSTS=redisdb
+    - GENERATE_KEY_AMOUNT=100
+  redisdb:
+    image: redis
+    ports:
+    - "6379:6379"
+
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+    - REDIS_HOSTS=local:redisdb:6379
+    ports:
+    - "8085:8081"
+    
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - 27017:27017
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8084:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+
