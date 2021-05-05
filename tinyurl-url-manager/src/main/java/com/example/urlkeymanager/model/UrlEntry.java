@@ -1,6 +1,7 @@
 package com.example.urlkeymanager.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
@@ -14,7 +15,8 @@ public class UrlEntry {
     Instant expireDate;
 
     @JsonCreator
-    public UrlEntry(String key, String url){
+    public UrlEntry(@JsonProperty("key") String key,
+                    @JsonProperty("url") String url) {
         this.key = key;
         this.url = url;
         expireDate = Instant.now().plusSeconds(604800);

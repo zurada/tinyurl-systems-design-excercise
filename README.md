@@ -70,4 +70,4 @@ Somebody can access wrong URL if it was reused (after expiration) again for anot
 
 ### TODO (readme updates to come!):
 1. Try to use Kubernetes
-2. Try to deploy all to Azure and scale!
+2. Try to deploy all to GCP and scale!

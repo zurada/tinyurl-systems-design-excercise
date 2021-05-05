@@ -1,27 +1,30 @@
 #!/bin/bash
 
 cd tinyurl-url-generator
-mvn clean install
-docker build -t url-key-generator .
+#mvn clean install
+docker build -t zurada/tinyurl-url-generator .
 
 cd ..
 
 cd tinyurl-api
-mvn clean install
-docker build -t tiny-url-api .
+#mvn clean install
+docker build -t zurada/tinyurl-api .
 
 cd ..
 
 cd  tinyurl-url-manager
-mvn clean install
-docker build -t url-key-manager .
+#mvn clean install
+docker build -t zurada/tinyurl-url-manager .
 
 cd ..
 
 cd tinyurl-web
-#npm install
-npm run build
 
-sudo docker build -t tiny-web-gen . --build-arg
+docker build -t zurada/tinyurl-web . --build-arg REACT_APP_REDIRECT_URL=http://localhost:8080/
 
+#docker push zurada/tinyurl-url-generator
+#docker push zurada/tinyurl-api
+#docker push zurada/tinyurl-url-manager
+#docker push zurada/tinyurl-web
 
+docker-compose up
