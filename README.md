@@ -14,7 +14,7 @@ The reason is just to try to prepare a small architecture that would enable me t
 especially for Azure.
 
 Written in:
-- Backend: Java 11: Spring Boot (required maven in order to build mvn clean install java applications)
+- Backend: Java 8+ (reduced to 8 for GCP AppEngine): Spring Boot (required maven in order to build mvn clean install java applications)
 - Frontend: React.js.
 - DB: MongoDB + Redis
 - Deployed as Docker compose
