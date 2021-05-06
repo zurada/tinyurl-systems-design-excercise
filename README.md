@@ -17,7 +17,12 @@ Written in:
 - Backend: Java 8+ (reduced to 8 for GCP AppEngine): Spring Boot (required maven in order to build mvn clean install java applications)
 - Frontend: React.js.
 - DB: MongoDB + Redis
-- Deployed as Docker compose
+- Deployed locally as Docker compose
+
+Different cloud versions checked into branches:
+- main: no cloud support, only docker locally
+- gcp/appengine: Codebase migrated to GCP AppEngine
+
 
 ## Generation logic of shortened URLs
 In [Grokking the System Design interview](https://www.educative.io/courses/grokking-the-system-design-interview) there are mentioned mutiple approaches for keys generation.
